@@ -1,0 +1,19 @@
+# docker-compose.yml (for dev)
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: my-postgres
+    environment:
+      POSTGRES_DB: todoapp_db
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: secretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data"
+      - ./custom-configs/postgresql.conf:/etc/postgresql/postgresql.conf.sample
+      - ./custom-configs/pg_hba.conf:/etc/postgresql/pg_hba.conf
+
+volumes:
+  pgdata:
