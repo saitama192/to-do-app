@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Set;
 
 @Service
@@ -25,7 +26,7 @@ public class CustomUserDetailService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                //.roles(roles.stream().toList().getFirst()) // TODO: Assuming you have roles field
+                //.roles(user.getRoles().toArray()) // TODO: Assuming you have roles field
                 .build();
     }
 }
