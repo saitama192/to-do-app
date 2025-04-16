@@ -56,7 +56,7 @@ public class AuthController {
     public Map<String, String> login(@RequestBody Map<String, String> loginRequest) {
         try {
             String username = loginRequest.get("username");
-            String password = loginRequest.get("password");
+            String password = loginRequest.get("password");//passwordEncoder.encode(loginRequest.get("password"));//loginRequest.get("password");
 
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)

@@ -1,2 +1,2 @@
-jwt.secret.key=your-secret-key
+jwt.secret.key=yoursecretkeyisthiswithoutanyspecialcharsyoursecretkeyisthiswithoutanyspecialcharsyoursecretkeyisthiswithoutanyspecialchars
 jwt.expiration.time=3600000
