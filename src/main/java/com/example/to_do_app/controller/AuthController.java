@@ -1,5 +1,6 @@
 package com.example.to_do_app.controller;
 
+import com.example.to_do_app.dto.LoginRequest;
 import com.example.to_do_app.dto.UserRegistrationDTO;
 import com.example.to_do_app.model.Role;
 import com.example.to_do_app.model.User;
@@ -47,10 +48,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> loginRequest) {
+    public Map<String, String> login(@RequestBody @Valid LoginRequest request) {
         try {
-            String username = loginRequest.get("username");
-            String password = loginRequest.get("password");
+            String username = request.username();
+            String password = request.password();
 
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
