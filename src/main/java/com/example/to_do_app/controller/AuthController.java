@@ -6,7 +6,7 @@ import com.example.to_do_app.model.User;
 import com.example.to_do_app.service.UserService;
 import com.example.to_do_app.util.JwtUtil;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,30 +19,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public Map<String, String> register(@RequestBody @Valid UserRegistrationDTO userDTO,
                                         @RequestParam(defaultValue = "false") boolean isAdmin) {
         User user = new User();
-        user.setName(userDTO.getName());
-        user.setSurname(userDTO.getSurname());
-        user.setEmail(userDTO.getEmail());
-        user.setPhone(userDTO.getPhone());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setName(userDTO.name());
+        user.setSurname(userDTO.surname());
+        user.setEmail(userDTO.email());
+        user.setPhone(userDTO.phone());
+        user.setPassword(passwordEncoder.encode(userDTO.password()));
         user.setRoles(isAdmin ? Collections.singleton(Role.ADMIN) : Collections.singleton(Role.USER));
 
         userService.createUser(user, isAdmin);
@@ -56,7 +50,7 @@ public class AuthController {
     public Map<String, String> login(@RequestBody Map<String, String> loginRequest) {
         try {
             String username = loginRequest.get("username");
-            String password = loginRequest.get("password");//passwordEncoder.encode(loginRequest.get("password"));//loginRequest.get("password");
+            String password = loginRequest.get("password");
 
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
