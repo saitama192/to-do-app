@@ -1,6 +1,6 @@
 package com.example.to_do_app.config;
 
-import com.example.to_do_app.service.CustomUserDetailService;
+import com.example.to_do_app.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,10 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class AuthenticationConfig {
 
-    private final CustomUserDetailService userDetailsService;
+    private final UserService userService;
 
-    public AuthenticationConfig(CustomUserDetailService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public AuthenticationConfig(UserService userService) {
+        this.userService = userService;
     }
 
     @Bean
@@ -26,7 +26,7 @@ public class AuthenticationConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
