@@ -8,6 +8,7 @@ import com.example.to_do_app.service.UserService;
 import com.example.to_do_app.util.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody @Valid LoginRequest request) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody @Valid LoginRequest request) {
         try {
             String username = request.username();
             String password = request.password();
@@ -61,7 +62,7 @@ public class AuthController {
 
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            return response;
+            return ResponseEntity.ok().body(response);
         } catch (AuthenticationException e) {
             throw new RuntimeException("Invalid username or password");
         }
