@@ -7,13 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public User createUser(User user, boolean isAdmin) {
@@ -34,5 +36,16 @@ public class UserService {
                     .orElseThrow(() -> new RuntimeException("User not found in database: " + email));
         }
         return null; // Or throw an exception if you always expect a logged-in user
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + email));
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                //.roles(user.getRoles().toArray()) // TODO: Assuming you have roles field
+                .build();
     }
 }
