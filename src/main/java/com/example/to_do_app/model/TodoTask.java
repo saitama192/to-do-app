@@ -26,6 +26,9 @@ public class TodoTask {
     private String description;
     private Date dateAdded;
     private Date dueDate;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
     @JoinColumn(name="userId", referencedColumnName = "id")
     private long userId;
 }
